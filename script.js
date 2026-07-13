@@ -48,7 +48,7 @@ function createMenu() {
 
     <p>👨‍👩‍👧‍👦 家族人数：${family}人</p>
     <p>💰 目安：${budget}円以内</p>
-    <p>⏰ 調理時間：約15分</p>
+    <p>⏰ 調理時間：${time}分</p>
 
   </div>
   `;
