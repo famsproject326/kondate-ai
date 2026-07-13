@@ -25,7 +25,6 @@ function createMenu() {
 
   }
 
-
   else if (food.includes("卵")) {
 
     main = "🍚 親子丼";
@@ -39,7 +38,6 @@ function createMenu() {
     "☑ ほうれん草";
 
   }
-
 
   else if (food.includes("キャベツ")) {
 
@@ -55,11 +53,10 @@ function createMenu() {
 
   }
 
-
   else {
 
     main = "🍛 節約カレー";
-    side = "🥗 サラダ";
+    side = "🥗 野菜サラダ";
     soup = "🍎 フルーツ";
 
     shopping =
@@ -90,6 +87,45 @@ function createMenu() {
     <h3>🛒 買い物リスト</h3>
 
     <p>${shopping}</p>
+
+  </div>
+  `;
+
+}
+
+
+
+function createWeek() {
+
+
+  document.getElementById("menu").innerHTML =
+
+  `
+  <div class="menu-card">
+
+    <h2>📅 1週間献立</h2>
+
+    <p>月 🍖 鶏むね照り焼き</p>
+    <p>火 🍛 節約カレー</p>
+    <p>水 🐟 焼き魚定食</p>
+    <p>木 🍝 ミートパスタ</p>
+    <p>金 🥘 豚丼</p>
+    <p>土 🍳 オムライス</p>
+    <p>日 🍲 鍋料理</p>
+
+    <hr>
+
+    <h3>🛒 まとめ買いリスト</h3>
+
+    <p>
+    ☑ 鶏むね肉<br>
+    ☑ 豚肉<br>
+    ☑ 卵<br>
+    ☑ キャベツ<br>
+    ☑ 玉ねぎ<br>
+    ☑ 米<br>
+    ☑ 調味料
+    </p>
 
   </div>
   `;
