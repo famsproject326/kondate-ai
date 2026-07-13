@@ -1,58 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+
 <head>
-  <meta charset="UTF-8">
-  <title>共働き献立AI</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>共働き献立AI</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
-  <h1>🍳 共働き献立AI</h1>
+<h1>🍳 共働き献立AI</h1>
 
-  <p>
-    毎日の「何作ろう？」を10秒で解決<br>
-    子どもが喜ぶ節約献立サービス
-  </p>
+<p>
+忙しい家庭のための節約献立サポート
+</p>
 
-  <div>
-    👨‍👩‍👧‍👦 子ども向け　
-    💰 節約重視　
-    ⏰ 時短料理
-  </div>
 
-  <input 
-    type="text" 
-    placeholder="例：鶏むね肉、卵、キャベツ">
-    
-    <select id="family">
-  <option value="2">2人</option>
-  <option value="3">3人</option>
-  <option value="4" selected>4人</option>
-  <option value="5">5人以上</option>
+<input 
+type="text"
+placeholder="例：鶏むね肉、卵、キャベツ">
+
+
+<select id="family">
+<option value="2">2人</option>
+<option value="3">3人</option>
+<option value="4" selected>4人</option>
+<option value="5">5人以上</option>
 </select>
+
 
 <select id="budget">
-  <option value="500">500円以内</option>
-  <option value="1000" selected>1000円以内</option>
-  <option value="1500">1500円以内</option>
+<option value="500">500円以内</option>
+<option value="1000" selected>1000円以内</option>
+<option value="1500">1500円以内</option>
 </select>
+
 
 <select id="time">
-  <option value="15">15分以内</option>
-  <option value="30" selected>30分以内</option>
-  <option value="45">45分以内</option>
+<option value="15">15分以内</option>
+<option value="30" selected>30分以内</option>
+<option value="45">45分以内</option>
 </select>
 
-  <br>
 
-  <button onclick="createMenu()">
-  献立を作る
-  </button>
-  
-  <div id="menu"></div>
+<br><br>
 
-  <script src="script.js"></script>
+
+<button onclick="createMenu()">
+今日の献立を作る
+</button>
+
+
+<button onclick="createWeek()">
+1週間献立を作る
+</button>
+
+
+<div id="menu"></div>
+
+
+<script src="script.js"></script>
+
 
 </body>
+
 </html>
