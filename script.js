@@ -11,24 +11,28 @@ function createMenu() {
   let main = "";
   let side = "";
   let soup = "";
+  let shopping = "";
 
   if (food.includes("鶏") || food.includes("肉")) {
 
     main = "🍖 鶏むね照り焼き";
     side = "🥗 キャベツサラダ";
     soup = "🍲 味噌汁";
+    shopping = "☑ 鶏むね肉<br>☑ キャベツ<br>☑ 玉ねぎ<br>☑ 味噌";
 
   } else if (food.includes("卵")) {
 
     main = "🍚 親子丼";
     side = "🥗 ほうれん草のおひたし";
     soup = "🍲 豆腐味噌汁";
+    shopping = "☑ 卵<br>☑ 玉ねぎ<br>☑ 豆腐";
 
   } else {
 
     main = "🍛 節約カレー";
     side = "🥗 野菜サラダ";
     soup = "🍎 フルーツ";
+    
 
   }
 
@@ -52,9 +56,7 @@ function createMenu() {
     
     <h3>🛒 買い物リスト</h3>
 
-    <p>☑ メイン食材</p>
-    <p>☑ 野菜</p>
-    <p>☑ 調味料</p>
+    ${shopping}
 
   </div>
   `;
