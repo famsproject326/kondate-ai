@@ -36,3 +36,22 @@ button {
   font-size: 18px;
   cursor: pointer;
 }
+
+.menu-card {
+  background: white;
+  margin: 30px auto;
+  padding: 25px;
+  max-width: 400px;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.menu-card h2 {
+  color: #ff7a00;
+  margin-bottom: 20px;
+}
+
+.menu-card p {
+  font-size: 18px;
+  margin: 12px 0;
+}
