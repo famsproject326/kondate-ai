@@ -1,109 +1,91 @@
+let currentMenu = "";
+
+
+
 function createMenu() {
 
-  const fridge = document.getElementById("fridge").value;
-  const avoid = document.getElementById("avoid").value;
 
-  const family = document.getElementById("family").value;
-  const budget = document.getElementById("budget").value;
-  const time = document.getElementById("time").value;
-  const child = document.getElementById("child").value;
+const fridge = document.getElementById("fridge").value;
+const avoid = document.getElementById("avoid").value;
 
-
-  let main = "";
-  let side = "";
-  let soup = "";
+const family = document.getElementById("family").value;
+const budget = document.getElementById("budget").value;
+const time = document.getElementById("time").value;
+const child = document.getElementById("child").value;
 
 
 
-  if (fridge.includes("鶏")) {
-
-    main = "🍖 甘辛チキン";
-
-  } else {
-
-    main = "🍛 節約カレー";
-
-  }
+let main = "🍛 節約カレー";
+let side = "🥗 野菜サラダ";
+let soup = "🍲 味噌汁";
 
 
+if(fridge.includes("鶏")){
 
-  if (
-    fridge.includes("キャベツ") &&
-    !avoid.includes("キャベツ")
-  ) {
+main="🍖 甘辛チキン";
 
-    side = "🥗 キャベツサラダ";
+}
 
-  } else {
+if(fridge.includes("卵") && !avoid.includes("卵")){
 
-    side = "🥗 野菜サラダ";
+soup="🍳 卵スープ";
 
-  }
+}
 
 
+if(fridge.includes("キャベツ") && !avoid.includes("キャベツ")){
 
-  if (
-    fridge.includes("卵") &&
-    !avoid.includes("卵")
-  ) {
+side="🥗 キャベツサラダ";
 
-    soup = "🍳 卵スープ";
-
-  } else {
-
-    soup = "🍲 味噌汁";
-
-  }
+}
 
 
 
-  document.getElementById("menu").innerHTML =
+currentMenu =
+`
+🍳 ${main}
+${side}
+${soup}
 
-
-  `
-  <div class="menu-card">
-
-
-    <h2>🍳 今日のおすすめ献立</h2>
-
-
-    <p>${main}</p>
-    <p>${side}</p>
-    <p>${soup}</p>
-
-
-    <hr>
-
-
-    <p>👨‍👩‍👧‍👦 家族人数：${family}人</p>
-
-    <p>💰 予算：${budget}円以内</p>
-
-    <p>⏰ 時間：${time}分以内</p>
-
-    <p>👧 子ども向け：${child}</p>
-
-
-    <p>
-    🚫 避ける食材：${avoid || "なし"}
-    </p>
+👨‍👩‍👧 家族：${family}人
+💰予算：${budget}円以内
+⏰時間：${time}分以内
+👧子ども向け：${child}
+`;
 
 
 
-    <h3>🛒 買い物リスト</h3>
+document.getElementById("menu").innerHTML =
+
+`
+<div class="menu-card">
+
+<h2>🍳 今日の献立</h2>
+
+<p>${main}</p>
+<p>${side}</p>
+<p>${soup}</p>
+
+<hr>
+
+<p>👨‍👩‍👧 家族：${family}人</p>
+<p>💰予算：${budget}円以内</p>
+<p>⏰時間：${time}分以内</p>
+<p>👧子ども向け：${child}</p>
+
+<button onclick="saveFavorite()">
+⭐ 保存
+</button>
+
+</div>
+`;
 
 
-    <p>
-    ☑ 鶏むね肉<br>
-    ☑ キャベツ<br>
-    ☑ 味噌<br>
-    </p>
+
+showShopping();
 
 
-
-  </div>
-
-  `;
+saveHistory();
 
 
 }
@@ -111,42 +93,169 @@ function createMenu() {
 
 
 
-function createWeek() {
+
+function showShopping(){
 
 
-  const avoid = document.getElementById("avoid").value;
+document.getElementById("shopping").innerHTML =
+
+`
+<div class="menu-card">
+
+<h3>🛒 買い物リスト</h3>
+
+<label>
+<input type="checkbox">
+鶏むね肉
+</label>
+
+<br>
+
+<label>
+<input type="checkbox">
+キャベツ
+</label>
+
+<br>
+
+<label>
+<input type="checkbox">
+卵
+</label>
+
+<br>
+
+<label>
+<input type="checkbox">
+味噌
+</label>
 
 
-  document.getElementById("menu").innerHTML =
+</div>
+`;
+
+}
 
 
-  `
-  <div class="menu-card">
 
 
-  <h2>📅 1週間献立</h2>
+
+function createWeek(){
 
 
-  <p>月 🍖 甘辛チキン</p>
-  <p>火 🍛 子どもカレー</p>
-  <p>水 🐟 魚料理</p>
-  <p>木 🍳 オムライス</p>
-  <p>金 🥘 豚丼</p>
-  <p>土 🍝 パスタ</p>
-  <p>日 🍲 鍋料理</p>
+document.getElementById("menu").innerHTML =
 
 
-  <hr>
+`
+<div class="menu-card">
+
+<h2>📅 1週間献立</h2>
+
+<p>月 🍖 甘辛チキン</p>
+<p>火 🍛 カレー</p>
+<p>水 🐟 焼き魚</p>
+<p>木 🍳 オムライス</p>
+<p>金 🥘 豚丼</p>
+<p>土 🍝 パスタ</p>
+<p>日 🍲 鍋</p>
 
 
-  <p>
-  🚫 避ける食材：${avoid || "なし"}
-  </p>
+</div>
+`;
+
+}
 
 
-  </div>
 
-  `;
 
+
+function saveFavorite(){
+
+
+localStorage.setItem(
+"favoriteMenu",
+currentMenu
+);
+
+
+alert("⭐お気に入り保存しました");
+
+}
+
+
+
+
+
+function showFavorite(){
+
+
+let data =
+localStorage.getItem("favoriteMenu");
+
+
+document.getElementById("menu").innerHTML =
+
+`
+<div class="menu-card">
+
+<h2>⭐お気に入り</h2>
+
+<p>
+${data || "まだ保存されていません"}
+</p>
+
+</div>
+`;
+
+}
+
+
+
+
+
+function saveHistory(){
+
+
+let history =
+JSON.parse(localStorage.getItem("history")) || [];
+
+
+history.push(currentMenu);
+
+
+localStorage.setItem(
+"history",
+JSON.stringify(history)
+);
+
+
+}
+
+
+
+
+
+function showHistory(){
+
+
+let history =
+JSON.parse(localStorage.getItem("history")) || [];
+
+
+document.getElementById("menu").innerHTML =
+
+
+`
+<div class="menu-card">
+
+<h2>📜 献立履歴</h2>
+
+<p>
+${history.join("<br><br>") || "履歴なし"}
+</p>
+
+
+</div>
+`;
 
 }
