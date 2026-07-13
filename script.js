@@ -4,6 +4,8 @@ function createMenu() {
 
   const family = document.getElementById("family").value;
 
+  const budget = document.getElementById("budget").value;
+
   let main = "";
   let side = "";
   let soup = "";
