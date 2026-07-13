@@ -4,46 +4,46 @@ let currentMenu = "";
 
 function createMenu() {
 
+  const fridge = document.getElementById("fridge").value;
+  const avoid = document.getElementById("avoid").value;
 
-const fridge = document.getElementById("fridge").value;
-const avoid = document.getElementById("avoid").value;
-
-const family = document.getElementById("family").value;
-const budget = document.getElementById("budget").value;
-const time = document.getElementById("time").value;
-const child = document.getElementById("child").value;
-
+  const family = document.getElementById("family").value;
+  const budget = document.getElementById("budget").value;
+  const time = document.getElementById("time").value;
+  const child = document.getElementById("child").value;
 
 
-let main = "🍛 節約カレー";
-let side = "🥗 野菜サラダ";
-let soup = "🍲 味噌汁";
+  let main = "🍛 節約カレー";
+  let side = "🥗 野菜サラダ";
+  let soup = "🍲 味噌汁";
 
 
-if(fridge.includes("鶏")){
+  if(fridge.includes("鶏")){
 
-main="🍖 甘辛チキン";
+    main = "🍖 甘辛チキン";
 
-}
-
-if(fridge.includes("卵") && !avoid.includes("卵")){
-
-soup="🍳 卵スープ";
-
-}
+  }
 
 
-if(fridge.includes("キャベツ") && !avoid.includes("キャベツ")){
+  if(fridge.includes("キャベツ") && !avoid.includes("キャベツ")){
 
-side="🥗 キャベツサラダ";
+    side = "🥗 キャベツサラダ";
 
-}
+  }
+
+
+  if(fridge.includes("卵") && !avoid.includes("卵")){
+
+    soup = "🍳 卵スープ";
+
+  }
 
 
 
-currentMenu =
+  currentMenu =
+
 `
-🍳 ${main}
+${main}
 ${side}
 ${soup}
 
@@ -55,7 +55,7 @@ ${soup}
 
 
 
-document.getElementById("menu").innerHTML =
+  document.getElementById("menu").innerHTML =
 
 `
 <div class="menu-card">
@@ -73,8 +73,9 @@ document.getElementById("menu").innerHTML =
 <p>⏰時間：${time}分以内</p>
 <p>👧子ども向け：${child}</p>
 
+
 <button onclick="saveFavorite()">
-⭐ 保存
+⭐ お気に入り保存
 </button>
 
 </div>
@@ -82,106 +83,33 @@ document.getElementById("menu").innerHTML =
 
 
 
-showShopping();
-
-
 saveHistory();
 
-
 }
-
-
-
-
-
-function showShopping(){
-
-
-document.getElementById("shopping").innerHTML =
-
-`
-<div class="menu-card">
-
-<h3>🛒 買い物リスト</h3>
-
-<label>
-<input type="checkbox">
-鶏むね肉
-</label>
-
-<br>
-
-<label>
-<input type="checkbox">
-キャベツ
-</label>
-
-<br>
-
-<label>
-<input type="checkbox">
-卵
-</label>
-
-<br>
-
-<label>
-<input type="checkbox">
-味噌
-</label>
-
-
-</div>
-`;
-
-}
-
-
-
-
-
-function createWeek(){
-
-
-document.getElementById("menu").innerHTML =
-
-
-`
-<div class="menu-card">
-
-<h2>📅 1週間献立</h2>
-
-<p>月 🍖 甘辛チキン</p>
-<p>火 🍛 カレー</p>
-<p>水 🐟 焼き魚</p>
-<p>木 🍳 オムライス</p>
-<p>金 🥘 豚丼</p>
-<p>土 🍝 パスタ</p>
-<p>日 🍲 鍋</p>
-
-
-</div>
-`;
-
-}
-
 
 
 
 
 function saveFavorite(){
 
+  if(currentMenu === ""){
 
-localStorage.setItem(
-"favoriteMenu",
-currentMenu
-);
+    alert("先に献立を作ってください");
+
+    return;
+
+  }
 
 
-alert("⭐お気に入り保存しました");
+  localStorage.setItem(
+    "favoriteMenu",
+    currentMenu
+  );
+
+
+  alert("⭐保存しました");
 
 }
-
 
 
 
@@ -189,11 +117,12 @@ alert("⭐お気に入り保存しました");
 function showFavorite(){
 
 
-let data =
+const favorite =
 localStorage.getItem("favoriteMenu");
 
 
 document.getElementById("menu").innerHTML =
+
 
 `
 <div class="menu-card">
@@ -201,7 +130,7 @@ document.getElementById("menu").innerHTML =
 <h2>⭐お気に入り</h2>
 
 <p>
-${data || "まだ保存されていません"}
+${favorite || "まだありません"}
 </p>
 
 </div>
@@ -248,12 +177,39 @@ document.getElementById("menu").innerHTML =
 `
 <div class="menu-card">
 
-<h2>📜 献立履歴</h2>
+<h2>📜献立履歴</h2>
 
 <p>
+
 ${history.join("<br><br>") || "履歴なし"}
+
 </p>
 
+</div>
+`;
+
+}
+
+
+
+
+function createWeek(){
+
+
+document.getElementById("menu").innerHTML =
+
+`
+<div class="menu-card">
+
+<h2>📅1週間献立</h2>
+
+<p>月 🍖 甘辛チキン</p>
+<p>火 🍛 カレー</p>
+<p>水 🐟 焼き魚</p>
+<p>木 🍳 オムライス</p>
+<p>金 🥘 豚丼</p>
+<p>土 🍝 パスタ</p>
+<p>日 🍲 鍋</p>
 
 </div>
 `;
