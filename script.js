@@ -4,43 +4,67 @@ let currentMenu = "";
 
 function createMenu() {
 
-  const fridge = document.getElementById("fridge").value;
-  const avoid = document.getElementById("avoid").value;
 
-  const family = document.getElementById("family").value;
-  const budget = document.getElementById("budget").value;
-  const time = document.getElementById("time").value;
-  const child = document.getElementById("child").value;
+const fridge = document.getElementById("fridge").value;
+const avoid = document.getElementById("avoid").value;
 
-
-  let main = "🍛 節約カレー";
-  let side = "🥗 野菜サラダ";
-  let soup = "🍲 味噌汁";
-
-
-  if(fridge.includes("鶏")){
-
-    main = "🍖 甘辛チキン";
-
-  }
-
-
-  if(fridge.includes("キャベツ") && !avoid.includes("キャベツ")){
-
-    side = "🥗 キャベツサラダ";
-
-  }
-
-
-  if(fridge.includes("卵") && !avoid.includes("卵")){
-
-    soup = "🍳 卵スープ";
-
-  }
+const family = document.getElementById("family").value;
+const budget = document.getElementById("budget").value;
+const time = document.getElementById("time").value;
+const child = document.getElementById("child").value;
 
 
 
-  currentMenu =
+let main = "🍛 節約カレー";
+let side = "🥗 野菜サラダ";
+let soup = "🍲 味噌汁";
+
+let shopping = [];
+
+
+
+if(fridge.includes("鶏")){
+
+main = "🍖 甘辛チキン";
+shopping.push("鶏むね肉");
+
+}else{
+
+shopping.push("肉類");
+
+}
+
+
+
+if(fridge.includes("キャベツ")
+&& !avoid.includes("キャベツ")){
+
+side="🥗 キャベツサラダ";
+shopping.push("キャベツ");
+
+}else{
+
+shopping.push("野菜");
+
+}
+
+
+
+if(fridge.includes("卵")
+&& !avoid.includes("卵")){
+
+soup="🍳 卵スープ";
+shopping.push("卵");
+
+}else{
+
+shopping.push("味噌");
+
+}
+
+
+
+currentMenu =
 
 `
 ${main}
@@ -55,7 +79,7 @@ ${soup}
 
 
 
-  document.getElementById("menu").innerHTML =
+document.getElementById("menu").innerHTML =
 
 `
 <div class="menu-card">
@@ -66,7 +90,9 @@ ${soup}
 <p>${side}</p>
 <p>${soup}</p>
 
+
 <hr>
+
 
 <p>👨‍👩‍👧 家族：${family}人</p>
 <p>💰予算：${budget}円以内</p>
@@ -78,38 +104,69 @@ ${soup}
 ⭐ お気に入り保存
 </button>
 
+
 </div>
 `;
 
 
 
+showShopping(shopping);
+
 saveHistory();
 
+
 }
+
+
+
+
+function showShopping(items){
+
+
+document.getElementById("shopping").innerHTML =
+
+
+`
+<div class="menu-card">
+
+<h3>🛒 買い物リスト</h3>
+
+
+${items.map(item =>
+
+`
+<label>
+<input type="checkbox">
+${item}
+</label>
+<br>
+`
+
+).join("")}
+
+
+</div>
+`;
+
+}
+
 
 
 
 
 function saveFavorite(){
 
-  if(currentMenu === ""){
 
-    alert("先に献立を作ってください");
-
-    return;
-
-  }
+localStorage.setItem(
+"favoriteMenu",
+currentMenu
+);
 
 
-  localStorage.setItem(
-    "favoriteMenu",
-    currentMenu
-  );
-
-
-  alert("⭐保存しました");
+alert("⭐保存しました");
 
 }
+
 
 
 
@@ -117,7 +174,7 @@ function saveFavorite(){
 function showFavorite(){
 
 
-const favorite =
+let data =
 localStorage.getItem("favoriteMenu");
 
 
@@ -129,9 +186,7 @@ document.getElementById("menu").innerHTML =
 
 <h2>⭐お気に入り</h2>
 
-<p>
-${favorite || "まだありません"}
-</p>
+<p>${data || "まだありません"}</p>
 
 </div>
 `;
@@ -177,18 +232,17 @@ document.getElementById("menu").innerHTML =
 `
 <div class="menu-card">
 
-<h2>📜献立履歴</h2>
+<h2>📜履歴</h2>
 
 <p>
-
 ${history.join("<br><br>") || "履歴なし"}
-
 </p>
 
 </div>
 `;
 
 }
+
 
 
 
