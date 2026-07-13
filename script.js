@@ -6,6 +6,8 @@ function createMenu() {
 
   const budget = document.getElementById("budget").value;
 
+  const time = document.getElementById("time").value;
+
   let main = "";
   let side = "";
   let soup = "";
