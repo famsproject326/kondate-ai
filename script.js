@@ -15,12 +15,19 @@ const child = document.getElementById("child").value;
 
 
 
-// 食材を分割
 let foods = fridge
 .replace(/、/g,",")
 .split(",")
 .map(x=>x.trim())
-.filter(x=>x !== "");
+.filter(x=>x);
+
+
+
+let avoids = avoid
+.replace(/、/g,",")
+.split(",")
+.map(x=>x.trim())
+.filter(x=>x);
 
 
 
@@ -32,7 +39,7 @@ let soup = "🍲 味噌汁";
 
 if(fridge.includes("鶏")){
 
-main = "🍖 甘辛チキン";
+main="🍖 甘辛チキン";
 
 }
 
@@ -45,13 +52,13 @@ side="🥗 キャベツサラダ";
 }
 
 
+
 if(fridge.includes("卵")
 && !avoid.includes("卵")){
 
 soup="🍳 卵スープ";
 
 }
-
 
 
 
@@ -70,6 +77,9 @@ ${soup}
 💰予算：${budget}円以内
 ⏰時間：${time}分以内
 👧子ども向け：${child}
+
+🚫避ける食材：
+${avoids.length ? avoids.join("、") : "なし"}
 `;
 
 
@@ -100,8 +110,18 @@ document.getElementById("menu").innerHTML =
 <p>👧子ども向け：${child}</p>
 
 
+<p>
+🚫避ける食材：
+<br>
+${avoids.length ? avoids.join("、") : "なし"}
+</p>
+
+
+
 <button onclick="saveFavorite()">
+
 ⭐ お気に入り保存
+
 </button>
 
 
@@ -113,6 +133,7 @@ document.getElementById("menu").innerHTML =
 showShopping();
 
 saveHistory();
+
 
 }
 
@@ -128,19 +149,19 @@ document.getElementById("shopping").innerHTML =
 `
 <div class="menu-card">
 
-
 <h3>🛒 買い物リスト</h3>
 
 
 ${
-currentShopping.length === 0
+currentShopping.length
+
 ?
-"食材を入力してください"
-:
+
 currentShopping.map(item=>
 
 `
-<div style="padding:10px 0;font-size:18px;">
+
+<div>
 
 <label>
 
@@ -155,7 +176,14 @@ ${item}
 `
 
 ).join("")
+
+
+:
+
+"食材を入力してください"
+
 }
+
 
 
 </div>
@@ -175,7 +203,7 @@ currentMenu
 );
 
 
-alert("⭐保存しました");
+alert("⭐お気に入り保存しました");
 
 }
 
@@ -184,7 +212,8 @@ alert("⭐保存しました");
 
 function showFavorite(){
 
-let data =
+
+const data =
 localStorage.getItem("favoriteMenu");
 
 
@@ -204,6 +233,7 @@ ${data || "まだありません"}
 `;
 
 }
+
 
 
 
@@ -242,7 +272,7 @@ document.getElementById("menu").innerHTML =
 `
 <div class="menu-card">
 
-<h2>📜履歴</h2>
+<h2>📜献立履歴</h2>
 
 <p>
 
@@ -276,7 +306,7 @@ document.getElementById("menu").innerHTML =
 <p>木 🍳 オムライス</p>
 <p>金 🥘 豚丼</p>
 <p>土 🍝 パスタ</p>
-<p>日 🍲 鍋</p>
+<p>日 🍲 鍋料理</p>
 
 
 </div>
