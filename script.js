@@ -1,4 +1,5 @@
 let currentMenu = "";
+let currentShopping = [];
 
 
 
@@ -19,13 +20,17 @@ let main = "🍛 節約カレー";
 let side = "🥗 野菜サラダ";
 let soup = "🍲 味噌汁";
 
+
 let shopping = [];
 
 
 
 if(fridge.includes("鶏")){
 
-main = "🍖 甘辛チキン";
+main = child === "あり"
+? "🍖 甘辛チキン"
+: "🍖 鶏むね照り焼き";
+
 shopping.push("鶏むね肉");
 
 }else{
@@ -64,6 +69,10 @@ shopping.push("味噌");
 
 
 
+currentShopping = shopping;
+
+
+
 currentMenu =
 
 `
@@ -79,7 +88,9 @@ ${soup}
 
 
 
+
 document.getElementById("menu").innerHTML =
+
 
 `
 <div class="menu-card">
@@ -90,15 +101,15 @@ document.getElementById("menu").innerHTML =
 <p>${side}</p>
 <p>${soup}</p>
 
-
 <hr>
-
 
 <p>👨‍👩‍👧 家族：${family}人</p>
 <p>💰予算：${budget}円以内</p>
 <p>⏰時間：${time}分以内</p>
 <p>👧子ども向け：${child}</p>
 
+
+<br>
 
 <button onclick="saveFavorite()">
 ⭐ お気に入り保存
@@ -110,7 +121,7 @@ document.getElementById("menu").innerHTML =
 
 
 
-showShopping(shopping);
+showShopping();
 
 saveHistory();
 
@@ -120,7 +131,7 @@ saveHistory();
 
 
 
-function showShopping(items){
+function showShopping(){
 
 
 document.getElementById("shopping").innerHTML =
@@ -132,14 +143,21 @@ document.getElementById("shopping").innerHTML =
 <h3>🛒 買い物リスト</h3>
 
 
-${items.map(item =>
+${currentShopping.map(item =>
 
 `
+<div style="padding:8px 0; font-size:18px;">
+
 <label>
+
 <input type="checkbox">
-${item}
+
+🛒 ${item}
+
 </label>
-<br>
+
+</div>
+
 `
 
 ).join("")}
@@ -163,7 +181,7 @@ currentMenu
 );
 
 
-alert("⭐保存しました");
+alert("⭐お気に入り保存しました");
 
 }
 
@@ -174,7 +192,7 @@ alert("⭐保存しました");
 function showFavorite(){
 
 
-let data =
+const data =
 localStorage.getItem("favoriteMenu");
 
 
@@ -186,7 +204,9 @@ document.getElementById("menu").innerHTML =
 
 <h2>⭐お気に入り</h2>
 
-<p>${data || "まだありません"}</p>
+<p>
+${data || "まだ保存されていません"}
+</p>
 
 </div>
 `;
@@ -232,10 +252,12 @@ document.getElementById("menu").innerHTML =
 `
 <div class="menu-card">
 
-<h2>📜履歴</h2>
+<h2>📜献立履歴</h2>
 
 <p>
+
 ${history.join("<br><br>") || "履歴なし"}
+
 </p>
 
 </div>
@@ -252,18 +274,20 @@ function createWeek(){
 
 document.getElementById("menu").innerHTML =
 
+
 `
 <div class="menu-card">
 
 <h2>📅1週間献立</h2>
 
 <p>月 🍖 甘辛チキン</p>
-<p>火 🍛 カレー</p>
+<p>火 🍛 子どもカレー</p>
 <p>水 🐟 焼き魚</p>
 <p>木 🍳 オムライス</p>
 <p>金 🥘 豚丼</p>
 <p>土 🍝 パスタ</p>
-<p>日 🍲 鍋</p>
+<p>日 🍲 鍋料理</p>
+
 
 </div>
 `;
