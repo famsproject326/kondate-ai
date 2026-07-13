@@ -60,7 +60,7 @@ function createMenu() {
     <p>⏰ 調理時間：${time}分</p>
     
     <h3>🛒 買い物リスト</h3>
-    ${shopping}
+    <p>${shopping}</p>
 
   </div>
   `;
