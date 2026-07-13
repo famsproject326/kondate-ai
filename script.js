@@ -1,6 +1,7 @@
 function createMenu() {
 
   const fridge = document.getElementById("fridge").value;
+  const avoid = document.getElementById("avoid").value;
 
   const family = document.getElementById("family").value;
   const budget = document.getElementById("budget").value;
@@ -11,7 +12,7 @@ function createMenu() {
   let main = "";
   let side = "";
   let soup = "";
-  let shopping = "";
+
 
 
   if (fridge.includes("鶏")) {
@@ -25,7 +26,11 @@ function createMenu() {
   }
 
 
-  if (fridge.includes("キャベツ")) {
+
+  if (
+    fridge.includes("キャベツ") &&
+    !avoid.includes("キャベツ")
+  ) {
 
     side = "🥗 キャベツサラダ";
 
@@ -36,7 +41,11 @@ function createMenu() {
   }
 
 
-  if (fridge.includes("卵")) {
+
+  if (
+    fridge.includes("卵") &&
+    !avoid.includes("卵")
+  ) {
 
     soup = "🍳 卵スープ";
 
@@ -47,73 +56,76 @@ function createMenu() {
   }
 
 
-  if (fridge.includes("鶏")) {
-
-    shopping += "☑ 鶏むね肉<br>";
-
-  }
-
-  if (fridge.includes("キャベツ")) {
-
-    shopping += "☑ キャベツ<br>";
-
-  }
-
-  if (fridge.includes("卵")) {
-
-    shopping += "☑ 卵<br>";
-
-  }
-
-
-  if (shopping === "") {
-
-    shopping =
-    "☑ 肉類<br>" +
-    "☑ 野菜<br>" +
-    "☑ 調味料";
-
-  }
-
 
   document.getElementById("menu").innerHTML =
+
 
   `
   <div class="menu-card">
 
-    <h2>🧊 冷蔵庫から作る献立</h2>
+
+    <h2>🍳 今日のおすすめ献立</h2>
+
 
     <p>${main}</p>
     <p>${side}</p>
     <p>${soup}</p>
 
+
     <hr>
 
+
     <p>👨‍👩‍👧‍👦 家族人数：${family}人</p>
+
     <p>💰 予算：${budget}円以内</p>
+
     <p>⏰ 時間：${time}分以内</p>
+
     <p>👧 子ども向け：${child}</p>
+
+
+    <p>
+    🚫 避ける食材：${avoid || "なし"}
+    </p>
+
 
 
     <h3>🛒 買い物リスト</h3>
 
-    <p>${shopping}</p>
+
+    <p>
+    ☑ 鶏むね肉<br>
+    ☑ キャベツ<br>
+    ☑ 味噌<br>
+    </p>
+
+
 
   </div>
+
   `;
+
 
 }
 
 
 
+
 function createWeek() {
 
+
+  const avoid = document.getElementById("avoid").value;
+
+
   document.getElementById("menu").innerHTML =
+
 
   `
   <div class="menu-card">
 
+
   <h2>📅 1週間献立</h2>
+
 
   <p>月 🍖 甘辛チキン</p>
   <p>火 🍛 子どもカレー</p>
@@ -121,9 +133,20 @@ function createWeek() {
   <p>木 🍳 オムライス</p>
   <p>金 🥘 豚丼</p>
   <p>土 🍝 パスタ</p>
-  <p>日 🍲 鍋</p>
+  <p>日 🍲 鍋料理</p>
+
+
+  <hr>
+
+
+  <p>
+  🚫 避ける食材：${avoid || "なし"}
+  </p>
+
 
   </div>
+
   `;
+
 
 }
