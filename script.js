@@ -27,11 +27,16 @@ function createMenu() {
     soup = "🍲 豆腐味噌汁";
     shopping = "☑ 卵<br>☑ 玉ねぎ<br>☑ 豆腐";
 
-  } else {
+  } else if (food.includes("キャベツ")) {
 
-    main = "🍛 節約カレー";
-    side = "🥗 野菜サラダ";
-    soup = "🍎 フルーツ";
+  main = "🥬 キャベツ炒め";
+  side = "🥗 キャベツサラダ";
+  soup = "🍲 味噌汁";
+
+  shopping = "☑ キャベツ<br>☑ 豚肉<br>☑ 味噌";
+
+}
+
     
 
   }
