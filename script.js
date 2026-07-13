@@ -14,66 +14,58 @@ function createMenu() {
   if (food.includes("鶏") || food.includes("肉")) {
 
     main = "🍖 鶏むね照り焼き";
-
-  } else {
-
-    main = "🍛 節約カレー";
-
-  }
-
-
-  if (food.includes("キャベツ")) {
-
     side = "🥗 キャベツサラダ";
-
-  } else {
-
-    side = "🥗 野菜サラダ";
-
-  }
-
-
-  if (food.includes("卵")) {
-
-    soup = "🍳 卵スープ";
-
-  } else {
-
     soup = "🍲 味噌汁";
 
-  }
-
-
-  if (
-    food.includes("鶏") ||
-    food.includes("肉")
-  ) {
-
-    shopping += "☑ 鶏むね肉<br>";
+    shopping =
+    "☑ 鶏むね肉（入力済み）<br>" +
+    "☑ キャベツ<br>" +
+    "☑ 玉ねぎ<br>" +
+    "☑ 味噌";
 
   }
 
 
-  if (food.includes("キャベツ")) {
+  else if (food.includes("卵")) {
 
-    shopping += "☑ キャベツ<br>";
+    main = "🍚 親子丼";
+    side = "🥗 ほうれん草のおひたし";
+    soup = "🍲 豆腐味噌汁";
+
+    shopping =
+    "☑ 卵（入力済み）<br>" +
+    "☑ 玉ねぎ<br>" +
+    "☑ 豆腐<br>" +
+    "☑ ほうれん草";
 
   }
 
 
-  if (food.includes("卵")) {
+  else if (food.includes("キャベツ")) {
 
-    shopping += "☑ 卵<br>";
+    main = "🥬 キャベツ炒め";
+    side = "🥗 コールスロー";
+    soup = "🍲 味噌汁";
+
+    shopping =
+    "☑ キャベツ（入力済み）<br>" +
+    "☑ 豚肉<br>" +
+    "☑ 味噌<br>" +
+    "☑ 卵";
 
   }
 
 
-  if (shopping === "") {
+  else {
+
+    main = "🍛 節約カレー";
+    side = "🥗 サラダ";
+    soup = "🍎 フルーツ";
 
     shopping =
     "☑ 肉類<br>" +
     "☑ 野菜<br>" +
-    "☑ 調味料";
+    "☑ カレールー";
 
   }
 
@@ -96,6 +88,7 @@ function createMenu() {
     <p>⏰ 調理時間：${time}分以内</p>
 
     <h3>🛒 買い物リスト</h3>
+
     <p>${shopping}</p>
 
   </div>
