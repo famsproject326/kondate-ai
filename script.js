@@ -2,6 +2,8 @@ function createMenu() {
 
   const food = document.querySelector("input").value;
 
+  const family = document.getElementById("family").value;
+
   let main = "";
   let side = "";
   let soup = "";
@@ -40,6 +42,7 @@ function createMenu() {
 
     <hr>
 
+    <p>👨‍👩‍👧‍👦 家族人数：${family}人</p>
     <p>💰 目安：500円以内</p>
     <p>⏰ 調理時間：約15分</p>
 
