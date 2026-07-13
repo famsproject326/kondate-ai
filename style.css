@@ -55,3 +55,8 @@ button {
   font-size: 18px;
   margin: 12px 0;
 }
+
+button {
+  margin: 8px;
+  padding: 12px 20px;
+}
