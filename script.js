@@ -1,5 +1,5 @@
 // APIキーをローカルストレージ（ブラウザの記憶領域）から読み込む
-document.getElementById('apiKey').value = localStorage.getItem('openai_api_key') || '';
+document.getElementById('apiKey').value = localStorage.getItem('groq_api_key') || '';
 
 async function createMenuWithAI() {
     const apiKey = document.getElementById('apiKey').value.trim();
@@ -12,17 +12,17 @@ async function createMenuWithAI() {
     const child = document.getElementById('child').value;
 
     if (!apiKey) {
-        alert("🔑 OpenAIのAPIキーを入力してください！");
+        alert("🔑 Groqの無料APIキー（gsk_...）を入力してください！");
         return;
     }
 
-    // 次回のためにAPIキーを記憶しておく
-    localStorage.setItem('openai_api_key', apiKey);
+    // 次回のためにキーを記憶しておく
+    localStorage.setItem('groq_api_key', apiKey);
 
     // ボタンを「考え中」に変更
     const btn = document.getElementById('generateBtn');
     btn.disabled = true;
-    btn.innerText = "⏳ AIが献立を考えています...";
+    btn.innerText = "⏳ 無料AIが献立を考えています...";
 
     const menuDiv = document.getElementById('menu');
     menuDiv.innerHTML = `<div class="menu-card"><p>🍳 冷蔵庫の食材をチェックして、最高のメニューを構築中やで。ちょっと待ってな...</p></div>`;
@@ -53,15 +53,15 @@ async function createMenuWithAI() {
 3. 必要な買い物リスト`;
 
     try {
-        // OpenAI API を直接呼び出す
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        // 無料で爆速な Groq API を呼び出す
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'gpt-4o-mini', // 安くて超高速な最新AIモデル
+                model: 'llama3-8b-8192', // 無料で使える超高速AIモデル
                 messages: [
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: userPrompt }
@@ -87,7 +87,7 @@ async function createMenuWithAI() {
 
         menuDiv.innerHTML = `
             <div class="menu-card">
-                <h2>✨ 今日のAI提案メニュー</h2>
+                <h2>✨ 今日のAI提案メニュー（無料版）</h2>
                 <p>${formattedResult}</p>
             </div>
         `;
