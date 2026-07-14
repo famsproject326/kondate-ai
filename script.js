@@ -66,7 +66,7 @@ async function createMenuWithAI() {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'llama3-8b-8192', // 無料で使える超高速AIモデル
+                model: 'llama-3.1-8b-instant', // 最新の後継無料高速モデルに変更！
                 messages: [
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: userPrompt }
