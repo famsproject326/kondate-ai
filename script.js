@@ -1,325 +1,107 @@
-let currentMenu = "";
-let currentShopping = [];
-
-
-function splitFoods(text){
-
-return text
-.replace(/、/g,",")
-.split(",")
-.map(x=>x.trim())
-.filter(x=>x);
-
-}
-
-
-
-function createMenu(){
-
-
-const food =
-document.getElementById("food").value;
-
-
-const fridge =
-document.getElementById("fridge").value;
-
-
-const avoid =
-document.getElementById("avoid").value;
-
-
-const family =
-document.getElementById("family").value;
-
-
-const budget =
-document.getElementById("budget").value;
-
-
-const time =
-document.getElementById("time").value;
-
-
-const child =
-document.getElementById("child").value;
-
-
-
-let wantFoods = splitFoods(food);
-
-let fridgeFoods = splitFoods(fridge);
-
-let avoids = splitFoods(avoid);
-
-
-
-let allFoods = [
-...wantFoods,
-...fridgeFoods
-];
-
-
-
-// 重複削除
-allFoods = [...new Set(allFoods)];
-
-
-
-let main="🍛 節約料理";
-let side="🥗 野菜サラダ";
-let soup="🍲 味噌汁";
-
-
-
-if(allFoods.some(x=>x.includes("鶏"))){
-
-main = child==="あり"
-? "🍖 子ども向け鶏むね照り焼き"
-: "🍖 鶏むね照り焼き";
-
-}
-
-
-if(allFoods.some(x=>x.includes("キャベツ"))
-&&!avoids.includes("キャベツ")){
-
-side="🥗 キャベツサラダ";
-
-}
-
-
-
-if(allFoods.some(x=>x.includes("卵"))
-&&!avoids.includes("卵")){
-
-soup="🍳 卵スープ";
-
-}
-
-
-
-currentShopping = allFoods;
-
-
-
-currentMenu =
-
-`
-${main}
-${side}
-${soup}
-
-👨‍👩‍👧 家族：${family}人
-💰予算：${budget}円以内
-⏰時間：${time}分以内
-👧子ども向け：${child}
-
-🚫避ける食材：
-${avoids.length ? avoids.join("、") : "なし"}
-`;
-
-
-
-document.getElementById("menu").innerHTML =
-
-
-`
-<div class="menu-card">
-
-<h2>🍳 今日の献立</h2>
-
-<p>${main}</p>
-<p>${side}</p>
-<p>${soup}</p>
-
-<hr>
-
-<p>👨‍👩‍👧 家族：${family}人</p>
-<p>💰予算：${budget}円以内</p>
-<p>⏰時間：${time}分以内</p>
-<p>👧子ども向け：${child}</p>
-
-
-<p>
-🚫避ける食材：
-<br>
-${avoids.length ? avoids.join("、") : "なし"}
-</p>
-
-
-<button onclick="saveFavorite()">
-⭐お気に入り保存
-</button>
-
-
-</div>
-`;
-
-
-
-showShopping();
-
-saveHistory();
-
-
-}
-
-
-
-
-
-function showShopping(){
-
-
-document.getElementById("shopping").innerHTML =
-
-
-`
-<div class="menu-card">
-
-<h3>🛒買い物リスト</h3>
-
-${
-currentShopping.length
-
-?
-
-currentShopping.map(item=>
-
-`
-
-<div style="padding:10px 0;">
-
-<label>
-
-<input type="checkbox">
-
-${item}
-
-</label>
-
-</div>
-
-`
-
-).join("")
-
-:
-
-"食材なし"
-
-}
-
-</div>
-`;
-
-}
-
-
-
-
-function saveFavorite(){
-
-localStorage.setItem(
-"favoriteMenu",
-currentMenu
-);
-
-
-alert("⭐保存しました");
-
-}
-
-
-
-function showFavorite(){
-
-let data =
-localStorage.getItem("favoriteMenu");
-
-
-document.getElementById("menu").innerHTML =
-
-`
-<div class="menu-card">
-
-<h2>⭐お気に入り</h2>
-
-<p>
-${data || "まだありません"}
-</p>
-
-</div>
-`;
-
-}
-
-
-
-
-function saveHistory(){
-
-let history =
-JSON.parse(localStorage.getItem("history")) || [];
-
-
-history.push(currentMenu);
-
-
-localStorage.setItem(
-"history",
-JSON.stringify(history)
-);
-
-}
-
-
-
-function showHistory(){
-
-let history =
-JSON.parse(localStorage.getItem("history")) || [];
-
-
-document.getElementById("menu").innerHTML =
-
-
-`
-<div class="menu-card">
-
-<h2>📜履歴</h2>
-
-<p>
-${history.join("<br><br>") || "履歴なし"}
-</p>
-
-</div>
-`;
-
-}
-
-
-
-
-function createWeek(){
-
-document.getElementById("menu").innerHTML =
-
-`
-<div class="menu-card">
-
-<h2>📅1週間献立</h2>
-
-<p>月 🍖鶏むね照り焼き</p>
-<p>火 🍛カレー</p>
-<p>水 🐟魚料理</p>
-<p>木 🍳オムライス</p>
-<p>金 🥘豚丼</p>
-<p>土 🍝パスタ</p>
-<p>日 🍲鍋</p>
-
-</div>
-`;
-
+// APIキーをローカルストレージ（ブラウザの記憶領域）から読み込む
+document.getElementById('apiKey').value = localStorage.getItem('openai_api_key') || '';
+
+async function createMenuWithAI() {
+    const apiKey = document.getElementById('apiKey').value.trim();
+    const food = document.getElementById('food').value;
+    const fridge = document.getElementById('fridge').value;
+    const avoid = document.getElementById('avoid').value;
+    const family = document.getElementById('family').value;
+    const budget = document.getElementById('budget').value;
+    const time = document.getElementById('time').value;
+    const child = document.getElementById('child').value;
+
+    if (!apiKey) {
+        alert("🔑 OpenAIのAPIキーを入力してください！");
+        return;
+    }
+
+    // 次回のためにAPIキーを記憶しておく
+    localStorage.setItem('openai_api_key', apiKey);
+
+    // ボタンを「考え中」に変更
+    const btn = document.getElementById('generateBtn');
+    btn.disabled = true;
+    btn.innerText = "⏳ AIが献立を考えています...";
+
+    const menuDiv = document.getElementById('menu');
+    menuDiv.innerHTML = `<div class="menu-card"><p>🍳 冷蔵庫の食材をチェックして、最高のメニューを構築中やで。ちょっと待ってな...</p></div>`;
+
+    // AIへの指示書（プロンプト）の作成
+    const systemPrompt = `あなたは忙しい共働き家庭や子育て家庭を支える、プロの献立マイスター（栄養士）です。
+与えられた食材や家族の条件をもとに、最適で美味しい献立を提案してください。
+提案する献立は「主菜」「副菜」「汁物」の3品。
+子ども向けが「あり」の場合は、子どもが食べやすくテンションが上がる工夫を記載すること。`;
+
+    const userPrompt = `以下の条件で今日の献立を提案してください。
+
+【冷蔵庫・食材状況】
+- 使いたい食材: ${food || "特になし"}
+- 冷蔵庫にある食材: ${fridge || "特になし"}
+- 避ける食材: ${avoid || "なし"}
+
+【家族・制限条件】
+- 家族構成: ${family}人分
+- 予算: ${budget}円以内
+- 目安調理時間: ${time}分以内
+- 子ども向け配慮: ${child}
+
+【出力フォーマット】
+以下の項目を、分かりやすい日本語（マークダウン形式）で出力してください。改行を多くして読みやすくしてください。
+1. 今日のメニュー（主菜・副菜・汁物の名前）
+2. 必要な材料と、忙しい時でも作れる超簡単な作り方のコツ
+3. 必要な買い物リスト`;
+
+    try {
+        // OpenAI API を直接呼び出す
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o-mini', // 安くて超高速な最新AIモデル
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: userPrompt }
+                ],
+                temperature: 0.7
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+            throw new Error(data.error.message);
+        }
+
+        const aiOutput = data.choices[0].message.content;
+
+        // マークダウン形式の出力を簡易的にHTMLに変換して表示
+        const formattedResult = aiOutput
+            .replace(/\n/g, '<br>')
+            .replace(/### (.*?)(<br>|$)/g, '<h4>$1</h4>')
+            .replace(/## (.*?)(<br>|$)/g, '<h3>$1</h3>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+        menuDiv.innerHTML = `
+            <div class="menu-card">
+                <h2>✨ 今日のAI提案メニュー</h2>
+                <p>${formattedResult}</p>
+            </div>
+        `;
+
+    } catch (error) {
+        menuDiv.innerHTML = `
+            <div class="menu-card" style="background: #fff0f0; border: 1px solid #ffaaaa;">
+                <h3 style="color: red;">❌ エラーが発生しました</h3>
+                <p>${error.message}</p>
+            </div>
+        `;
+    } finally {
+        // ボタンを元に戻す
+        btn.disabled = false;
+        btn.innerText = "🍳 AIに献立を作ってもらう";
+    }
 }
