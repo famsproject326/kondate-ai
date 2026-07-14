@@ -17,7 +17,7 @@ async function createMenuWithAI() {
     }
 
     // 正しい形式（gsk_から始まっているか）を簡易チェック
-    if (!apiKey.startsWith("gsk_")) {
+    if (!apiKey.startsWith("gsk_") && !apiKey.startsWith("sk-")) {
         alert("⚠️ APIキーの形式が正しくない可能性があります。「gsk_」から始まるキーを入力してください！\n（前後に余計な文字が入っていないか確認してな！）");
     }
 
