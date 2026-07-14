@@ -16,29 +16,29 @@ async function createMenuWithAI() {
         return;
     }
 
-    // 正しい形式（gsk_から始まっているか）を簡易チェック
-    if (!apiKey.startsWith("gsk_") && !apiKey.startsWith("sk-")) {
-        alert("⚠️ APIキーの形式が正しくない可能性があります。「gsk_」から始まるキーを入力してください！\n（前後に余計な文字が入っていないか確認してな！）");
-    }
-
     // 次回のためにキーを記憶しておく
     localStorage.setItem('groq_api_key', apiKey);
 
     // ボタンを「考え中」に変更
     const btn = document.getElementById('generateBtn');
     btn.disabled = true;
-    btn.innerText = "⏳ 無料AIが献立を考えています...";
+    btn.innerText = "⏳ 美味しい定番献立を考えています...";
 
     const menuDiv = document.getElementById('menu');
     menuDiv.innerHTML = `<div class="menu-card"><p>🍳 冷蔵庫の食材をチェックして、最高のメニューを構築中やで。ちょっと待ってな...</p></div>`;
 
-    // AIへの指示書（プロンプト）の作成
-    const systemPrompt = `あなたは忙しい共働き家庭や子育て家庭を支える、プロの献立マイスター（栄養士）です。
-与えられた食材や家族の条件をもとに、最適で美味しい献立を提案してください。
-提案する献立は「主菜」「副菜」「汁物」の3品。
-子ども向けが「あり」の場合は、子どもが食べやすくテンションが上がる工夫を記載すること。`;
+    // AIへの指示書（プロンプトを日本の定番料理に超強化！）
+    const systemPrompt = `あなたは忙しい共働き家庭や子育て家庭を全力で応援する、日本のプロの料理研究家（栄養士）です。
 
-    const userPrompt = `以下の条件で今日の献立を提案してください。
+【重要ルール】
+1. 提案する料理は、必ず「日本の一般的な家庭でよく食べられている、定番で美味しい家庭料理（例：照り焼き、生姜焼き、親子丼、肉じゃが、唐揚げなど）」に限定してください。
+2. 奇抜な創作料理、珍しいスパイス（クミンやコリアンダー等）、特殊なハーブを使う料理は絶対に提案しないでください。
+3. 使う調味料は、日本の一般的な家庭にあるもの（醤油、酒、みりん、砂糖、味噌、塩、コショウ、マヨネーズ、ポン酢、めんつゆなど）だけにしてください。
+4. 調理時間は指定された時間内で作れるよう、フライパン1つや電子レンジで完結するような超簡単な手順にしてください。
+5. 「主菜」「副菜」「汁物」の3品を提案してください。
+6. 子ども向けが「あり」の場合は、子どもがパクパク喜んで食べる工夫（甘めの味付け、一口サイズなど）を必ず記載してください。`;
+
+    const userPrompt = `以下の条件で今日の定番献立を提案してください。
 
 【冷蔵庫・食材状況】
 - 使いたい食材: ${food || "特になし"}
@@ -52,10 +52,11 @@ async function createMenuWithAI() {
 - 子ども向け配慮: ${child}
 
 【出力フォーマット】
-以下の項目を、分かりやすい日本語（マークダウン形式）で出力してください。改行を多くして読みやすくしてください。
-1. 今日のメニュー（主菜・副菜・汁物の名前）
-2. 必要な材料と、忙しい時でも作れる超簡単な作り方のコツ
-3. 必要な買い物リスト`;
+以下の構成で、改行を多くして、スマホでめちゃくちゃ見やすい日本語（マークダウン形式）で出力してください。
+1. ✨今日のメニュー（主菜・副菜・汁物の名前）
+2. 📝材料と超カンタン作り方（フライパンなどでパパッと作れる3ステップ程度の手順）
+3. 🛒買い物リスト（これだけ買えばOKなリスト）
+4. 💡忙しいママ・パパへの一言コツ（子どもが喜ぶポイントなど）`;
 
     try {
         // 無料で爆速な Groq API を呼び出す
@@ -66,18 +67,17 @@ async function createMenuWithAI() {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'llama-3.1-8b-instant', // 最新の後継無料高速モデルに変更！
+                model: 'llama-3.1-8b-instant', 
                 messages: [
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: userPrompt }
                 ],
-                temperature: 0.7
+                temperature: 0.6 // 少し低めにして、変な冒険をせずに手堅く定番を出すように調整
             })
         });
 
         const data = await response.json();
 
-        // エラーレスポンスがあった場合、その中身をしっかり画面に出す
         if (data.error) {
             throw new Error(`${data.error.message} (コード: ${data.error.code || '不明'})`);
         }
@@ -93,18 +93,13 @@ async function createMenuWithAI() {
 
         menuDiv.innerHTML = `
             <div class="menu-card">
-                <h2>✨ 今日のAI提案メニュー（無料版）</h2>
+                <h2>✨ 今日のAI提案メニュー（無料・定番版）</h2>
                 <p>${formattedResult}</p>
             </div>
         `;
 
     } catch (error) {
-        // エラーが起きたら何が原因か詳しく日本語で解説する
         let errorHint = "ネットワーク通信に失敗したか、APIキーが間違っています。";
-        if (error.message.includes("API key")) {
-            errorHint = "APIキーが間違っているか、無効化されています。Groqの管理画面で新しいキーを発行してみてください。";
-        }
-
         menuDiv.innerHTML = `
             <div class="menu-card" style="background: #fff0f0; border: 1px solid #ffaaaa;">
                 <h3 style="color: red;">❌ 接続エラーが発生しました</h3>
