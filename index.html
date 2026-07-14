@@ -1,123 +1,69 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>共働き献立AI</title>
-
-<link rel="stylesheet" href="style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>共働き献立AI</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
-
 <body>
+    <h1>🍳 共働き献立AI</h1>
+    <p>忙しい家庭のための献立・買い物サポート（β版）</p>
 
-<h1>🍳 共働き献立AI</h1>
+    <div class="menu-card" style="background: #fff5f5; border: 1px solid #ffcccc;">
+        <h3>🔑 OpenAI API Keyの設定</h3>
+        <input id="apiKey" type="password" placeholder="sk-... から始まるAPIキーを入力してください">
+        <p style="font-size: 11px; color: #666; margin-top: 5px;">※入力したキーはブラウザに安全に一時保存され、AI通信以外には使用されません。</p>
+    </div>
 
-<p>
-忙しい家庭のための献立・買い物サポート
-</p>
+    <input id="food" type="text" placeholder="🍳 使いたい食材 例：鶏むね肉">
+    <textarea id="fridge" placeholder="🧊 冷蔵庫にある食材&#10;例：卵、キャベツ、玉ねぎ"></textarea>
+    <textarea id="avoid" placeholder="🚫 苦手・避けたい食材&#10;例：ピーマン"></textarea>
 
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div>
+            <label style="font-size: 12px; color: #666;">👨‍👩‍👧 家族構成</label>
+            <select id="family">
+                <option value="2">2人</option>
+                <option value="3">3人</option>
+                <option value="4" selected>4人</option>
+                <option value="5">5人以上</option>
+            </select>
+        </div>
+        <div>
+            <label style="font-size: 12px; color: #666;">💰 予算</label>
+            <select id="budget">
+                <option value="500">500円以内</option>
+                <option value="1000" selected>1000円以内</option>
+                <option value="1500">1500円以内</option>
+                <option value="2000">2000円以内</option>
+            </select>
+        </div>
+    </div>
 
-<input 
-id="food"
-type="text"
-placeholder="🍳 使いたい食材 例：鶏むね肉">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+        <div>
+            <label style="font-size: 12px; color: #666;">⏰ 調理時間</label>
+            <select id="time">
+                <option value="15">15分以内</option>
+                <option value="30" selected>30分以内</option>
+                <option value="45">45分以内</option>
+            </select>
+        </div>
+        <div>
+            <label style="font-size: 12px; color: #666;">👧 子ども向け</label>
+            <select id="child">
+                <option value="あり" selected>あり</option>
+                <option value="なし">なし</option>
+            </select>
+        </div>
+    </div>
 
+    <button id="generateBtn" onclick="createMenuWithAI()">🍳 AIに献立を作ってもらう</button>
 
-<textarea
-id="fridge"
-placeholder="🧊 冷蔵庫にある食材&#10;例：卵、キャベツ、鶏むね肉">
-</textarea>
+    <div id="menu"></div>
+    <div id="shopping"></div>
 
-
-<textarea
-id="avoid"
-placeholder="🚫 苦手・避けたい食材&#10;例：ピーマン">
-</textarea>
-
-
-
-<select id="family">
-<option value="2">2人</option>
-<option value="3">3人</option>
-<option value="4" selected>4人</option>
-<option value="5">5人以上</option>
-</select>
-
-
-
-<select id="budget">
-<option value="500">500円以内</option>
-<option value="1000" selected>1000円以内</option>
-<option value="1500">1500円以内</option>
-</select>
-
-
-
-<select id="time">
-<option value="15">15分以内</option>
-<option value="30" selected>30分以内</option>
-<option value="45">45分以内</option>
-</select>
-
-
-
-<select id="child">
-
-<option value="あり" selected>
-👧 子ども向け
-</option>
-
-<option value="なし">
-大人向け
-</option>
-
-</select>
-
-
-<br><br>
-
-
-<button onclick="createMenu()">
-🍳 献立を作る
-</button>
-
-
-<button onclick="createWeek()">
-📅 1週間献立
-</button>
-
-
-<button onclick="saveFavorite()">
-⭐ お気に入り保存
-</button>
-
-
-<button onclick="showFavorite()">
-⭐ お気に入りを見る
-</button>
-
-
-<button onclick="showHistory()">
-📜 献立履歴
-</button>
-
-
-
-<div id="menu"></div>
-
-
-<div id="shopping"></div>
-
-
-
-<script src="script.js"></script>
-
-
+    <script src="script.js"></script>
 </body>
-
 </html>
