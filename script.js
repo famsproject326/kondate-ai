@@ -2,7 +2,7 @@
 document.getElementById('apiKey').value = localStorage.getItem('groq_api_key') || '';
 
 async function createMenuWithAI() {
-    const apiKey = document.getElementById('apiKey').value.trim();
+    let apiKey = document.getElementById('apiKey').value.trim(); // 空白を自動で消去する
     const food = document.getElementById('food').value;
     const fridge = document.getElementById('fridge').value;
     const avoid = document.getElementById('avoid').value;
@@ -14,6 +14,11 @@ async function createMenuWithAI() {
     if (!apiKey) {
         alert("🔑 Groqの無料APIキー（gsk_...）を入力してください！");
         return;
+    }
+
+    // 正しい形式（gsk_から始まっているか）を簡易チェック
+    if (!apiKey.startsWith("gsk_")) {
+        alert("⚠️ APIキーの形式が正しくない可能性があります。「gsk_」から始まるキーを入力してください！\n（前後に余計な文字が入っていないか確認してな！）");
     }
 
     // 次回のためにキーを記憶しておく
@@ -72,8 +77,9 @@ async function createMenuWithAI() {
 
         const data = await response.json();
 
+        // エラーレスポンスがあった場合、その中身をしっかり画面に出す
         if (data.error) {
-            throw new Error(data.error.message);
+            throw new Error(`${data.error.message} (コード: ${data.error.code || '不明'})`);
         }
 
         const aiOutput = data.choices[0].message.content;
@@ -93,10 +99,17 @@ async function createMenuWithAI() {
         `;
 
     } catch (error) {
+        // エラーが起きたら何が原因か詳しく日本語で解説する
+        let errorHint = "ネットワーク通信に失敗したか、APIキーが間違っています。";
+        if (error.message.includes("API key")) {
+            errorHint = "APIキーが間違っているか、無効化されています。Groqの管理画面で新しいキーを発行してみてください。";
+        }
+
         menuDiv.innerHTML = `
             <div class="menu-card" style="background: #fff0f0; border: 1px solid #ffaaaa;">
-                <h3 style="color: red;">❌ エラーが発生しました</h3>
-                <p>${error.message}</p>
+                <h3 style="color: red;">❌ 接続エラーが発生しました</h3>
+                <p><strong>エラー内容:</strong> ${error.message}</p>
+                <p style="margin-top: 10px; font-size: 12px; color: #666;">💡 <strong>ヒント:</strong> ${errorHint}</p>
             </div>
         `;
     } finally {
